@@ -31,7 +31,7 @@ public class AbstractObservableCollectionWrapper<E> extends AbstractObservableCo
 			Collection<? extends T> values) {
 		List<CollectionChange<T>> changes = new ArrayList<>(values.size());
 		for (T value : values) {
-			changes.add(new CollectionChange<T>(type, value));
+			changes.add(new CollectionChange<>(type, value));
 		}
 		return changes;
 	}

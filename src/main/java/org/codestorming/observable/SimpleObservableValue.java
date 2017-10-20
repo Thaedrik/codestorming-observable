@@ -31,7 +31,7 @@ public class SimpleObservableValue<T> implements ObservableValue<T> {
 
 	protected T value;
 
-	protected final Set<ChangeListener<T>> changeListeners = new HashSet<ChangeListener<T>>();
+	protected final Set<ChangeListener<T>> changeListeners = new HashSet<>();
 
 	private final ReadWriteLock lock = new ReentrantReadWriteLock();
 
@@ -166,26 +166,20 @@ public class SimpleObservableValue<T> implements ObservableValue<T> {
 			// it is already registered.
 			checkBinder();
 
-			listener0 = new ChangeListener<T>() {
-				@Override
-				public void onChange(ObservableValue<T> source, T oldValue, T newValue) {
-					if (!changing1) {
-						changing0 = true;
-						obs1.set(newValue);
-					} else {
-						changing1 = false;
-					}
+			listener0 = (source, oldValue, newValue) -> {
+				if (!changing1) {
+					changing0 = true;
+					obs1.set(newValue);
+				} else {
+					changing1 = false;
 				}
 			};
-			listener1 = new ChangeListener<T>() {
-				@Override
-				public void onChange(ObservableValue<T> source, T oldValue, T newValue) {
-					if (!changing0) {
-						changing1 = true;
-						obs0.set(newValue);
-					} else {
-						changing0 = false;
-					}
+			listener1 = (source, oldValue, newValue) -> {
+				if (!changing0) {
+					changing1 = true;
+					obs0.set(newValue);
+				} else {
+					changing0 = false;
 				}
 			};
 
